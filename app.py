@@ -1,24 +1,28 @@
 from flask import Flask, render_template, redirect, url_for, flash, request
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from config import Config
 from models import db, ContactMessage, Admin
 from forms import ContactForm, LoginForm
-from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from utils import record_visit, get_visits_count, get_visits_per_day
 
+# تهيئة التطبيق
 app = Flask(__name__)
 app.config.from_object(Config)
 
+# تهيئة قاعدة البيانات
 db.init_app(app)
 
+# تهيئة تسجيل الدخول
 login_manager = LoginManager()
 login_manager.login_view = 'admin_login'
 login_manager.init_app(app)
 
+# تحميل المستخدم (الأدمن)
 @login_manager.user_loader
 def load_user(user_id):
     return Admin.query.get(int(user_id))
 
-# --- الصفحة الرئيسية ---
+# ===== الصفحة الرئيسية =====
 @app.route("/", methods=['GET', 'POST'])
 def index():
     form = ContactForm()
@@ -37,12 +41,12 @@ def index():
         return redirect(url_for('index'))
     return render_template("index.html", form=form)
 
-# --- إعادة توجيه /admin إلى الداشبورد الحقيقي ---
+# ===== إعادة توجيه /admin إلى الداشبورد =====
 @app.route('/admin')
 def admin():
     return redirect(url_for('admin_dashboard'))
 
-# --- صفحة تسجيل دخول الأدمن ---
+# ===== صفحة تسجيل دخول الأدمن =====
 @app.route('/admin/login', methods=['GET', 'POST'])
 def admin_login():
     form = LoginForm()
@@ -55,7 +59,7 @@ def admin_login():
             flash('اسم المستخدم أو كلمة المرور غير صحيحة', 'danger')
     return render_template('admin_login.html', form=form)
 
-# --- تسجيل خروج الأدمن ---
+# ===== تسجيل خروج الأدمن =====
 @app.route('/admin/logout')
 @login_required
 def admin_logout():
@@ -63,11 +67,11 @@ def admin_logout():
     flash('تم تسجيل الخروج بنجاح', 'info')
     return redirect(url_for('admin_login'))
 
-# --- لوحة تحكم الأدمن (الداشبورد) ---
+# ===== لوحة تحكم الأدمن =====
 @app.route('/admin/dashboard')
 @login_required
 def admin_dashboard():
-    # اجلب الرسائل الغير مؤرشفة فقط، الأحدث أولاً
+    # جلب الرسائل الغير مؤرشفة
     messages = ContactMessage.query.filter_by(archived=False).order_by(ContactMessage.date_sent.desc()).all()
     visits_count = get_visits_count()
     labels, counts = get_visits_per_day()
@@ -79,7 +83,7 @@ def admin_dashboard():
         counts=counts
     )
 
-# --- حذف رسالة ---
+# ===== حذف رسالة =====
 @app.route('/admin/delete_message/<int:msg_id>')
 @login_required
 def delete_message(msg_id):
@@ -89,7 +93,7 @@ def delete_message(msg_id):
     flash('تم حذف الرسالة', 'success')
     return redirect(url_for('admin_dashboard'))
 
-# --- أرشفة رسالة ---
+# ===== أرشفة رسالة =====
 @app.route('/admin/archive_message/<int:msg_id>')
 @login_required
 def archive_message(msg_id):
@@ -99,26 +103,31 @@ def archive_message(msg_id):
     flash('تمت أرشفة الرسالة', 'info')
     return redirect(url_for('admin_dashboard'))
 
-# --- صفحة خطأ 404 ---
+# ===== صفحة خطأ 404 =====
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
 
-# --- تهيئة قاعدة البيانات وإنشاء الأدمن أول مرة ---
+# ===== أوامر التهيئة (CLI) =====
 @app.cli.command("init-db")
 def init_db():
-    db.create_all()
-    print("Database initialized.")
+    with app.app_context():
+        db.create_all()
+        print("Database initialized.")
 
 @app.cli.command("create-admin")
 def create_admin():
-    username = input("Enter admin username: ")
-    password = input("Enter admin password: ")
-    if Admin.query.filter_by(username=username).first():
-        print("Admin already exists.")
-        return
-    admin = Admin(username=username)
-    admin.set_password(password)
-    db.session.add(admin)
-    db.session.commit()
-    print("Admin created.")
+    with app.app_context():
+        username = input("Enter admin username: ")
+        password = input("Enter admin password: ")
+        if Admin.query.filter_by(username=username).first():
+            print("Admin already exists.")
+            return
+        admin = Admin(username=username)
+        admin.set_password(password)
+        db.session.add(admin)
+        db.session.commit()
+        print("Admin created.")
+
+if __name__ == '__main__':
+    app.run()
