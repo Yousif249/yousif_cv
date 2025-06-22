@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <title>لوحة تحكم الأدمن</title>
@@ -8,9 +8,12 @@
 <body>
     <div class="container">
         <h2>لوحة تحكم الأدمن</h2>
-        <a href="{{ url_for('admin_logout') }}" class="btn btn-danger mb-3 float-end">تسجيل خروج</a>
+        <a href="{{ url_for('admin_logout') }}" class="btn btn-danger float-end">تسجيل خروج</a>
+        <a href="{{ url_for('edit_admin') }}" class="btn btn-glow float-end">⚙️ تعديل بيانات الأدمن</a>
+        <a href="{{ url_for('download_messages') }}" class="btn btn-glow float-end">⬇️ تنزيل كل الرسائل (CSV)</a>
+        <div style="clear:both;"></div>
         <h4>رسائل التواصل</h4>
-        <table style="width: 100%; border-collapse: collapse;">
+        <table class="admin-table">
             <thead>
                 <tr>
                     <th>الاسم</th>
@@ -28,20 +31,30 @@
                     <td>{{ msg.full_name }}</td>
                     <td>{{ msg.phone }}</td>
                     <td>{{ msg.email }}</td>
-                    <td>{{ msg.message }}</td>
+                    <td style="max-width:180px;overflow-wrap:anywhere;">{{ msg.message }}</td>
                     <td>{{ msg.date_sent.strftime('%Y-%m-%d %H:%M') if msg.date_sent else '' }}</td>
-                    <td><a href="{{ url_for('delete_message', msg_id=msg.id) }}" class="btn btn-danger btn-sm">🗑️</a></td>
-                    <td><a href="{{ url_for('archive_message', msg_id=msg.id) }}" class="btn btn-warning btn-sm">أرشفة</a></td>
+                    <td>
+                        <a href="{{ url_for('delete_message', msg_id=msg.id) }}" class="btn btn-danger btn-sm" title="حذف">
+                            🗑️
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{ url_for('archive_message', msg_id=msg.id) }}" class="btn btn-warning btn-sm" title="أرشفة">
+                            أرشفة
+                        </a>
+                    </td>
                 </tr>
                 {% else %}
-                <tr><td colspan="7" style="text-align:center;">لا توجد رسائل بعد</td></tr>
+                <tr>
+                    <td colspan="7" style="text-align:center;">لا توجد رسائل بعد</td>
+                </tr>
                 {% endfor %}
             </tbody>
         </table>
         <hr>
         <h4>إحصائيات الزيارات</h4>
         <p>عدد الزيارات: {{ visits_count }}</p>
-        <!-- يمكن وضع رسم بياني هنا بناء على labels و counts -->
+        <!-- يمكن وضع رسم بياني هنا -->
     </div>
 </body>
 </html>

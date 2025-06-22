@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>تعديل بيانات الأدمن</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>تعديل بيانات الأدمن</h2>
+        <form method="post">
+            {{ form.hidden_tag() }}
+            <div>
+                {{ form.username.label }}<br>
+                {{ form.username(size=32, class_="form-control") }}
+            </div>
+            <div style="margin-top:15px;">
+                {{ form.password.label }}<br>
+                {{ form.password(size=32, class_="form-control", placeholder="اتركه فارغاً إذا لا تريد تغيير كلمة المرور") }}
+            </div>
+            <div style="margin-top:20px;">
+                {{ form.submit(class_="btn btn-glow") }}
+                <a href="{{ url_for('admin_dashboard') }}" class="btn btn-warning">إلغاء</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

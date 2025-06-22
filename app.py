@@ -1,9 +1,11 @@
-from flask import Flask, render_template, redirect, url_for, flash, request
+from flask import Flask, render_template, redirect, url_for, flash, request, make_response
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from config import Config
 from models import db, ContactMessage, Admin
-from forms import ContactForm, LoginForm
+from forms import ContactForm, LoginForm, EditAdminForm
 from utils import record_visit, get_visits_count, get_visits_per_day
+import csv
+from io import StringIO
 
 # تهيئة التطبيق
 app = Flask(__name__)
@@ -16,6 +18,20 @@ db.init_app(app)
 login_manager = LoginManager()
 login_manager.login_view = 'admin_login'
 login_manager.init_app(app)
+
+# ===== صفحة تعديل بيانات الأدمن =====
+@app.route('/admin/edit', methods=['GET', 'POST'])
+@login_required
+def edit_admin():
+    form = EditAdminForm(obj=current_user)
+    if form.validate_on_submit():
+        current_user.username = form.username.data
+        if form.password.data:
+            current_user.set_password(form.password.data)
+        db.session.commit()
+        flash('تم تحديث بيانات الأدمن بنجاح', 'success')
+        return redirect(url_for('admin_dashboard'))
+    return render_template('edit_admin.html', form=form)
 
 # تحميل المستخدم (الأدمن)
 @login_manager.user_loader
@@ -82,6 +98,27 @@ def admin_dashboard():
         labels=labels,
         counts=counts
     )
+
+# ===== تنزيل جميع الرسائل (CSV) =====
+@app.route('/admin/download_messages')
+@login_required
+def download_messages():
+    messages = ContactMessage.query.order_by(ContactMessage.date_sent.desc()).all()
+    si = StringIO()
+    writer = csv.writer(si)
+    writer.writerow(['الاسم', 'الجوال', 'البريد', 'الرسالة', 'التاريخ'])
+    for msg in messages:
+        writer.writerow([
+            msg.full_name,
+            msg.phone,
+            msg.email,
+            msg.message,
+            msg.date_sent.strftime('%Y-%m-%d %H:%M') if msg.date_sent else ''
+        ])
+    output = make_response(si.getvalue())
+    output.headers["Content-Disposition"] = "attachment; filename=contact_messages.csv"
+    output.headers["Content-type"] = "text/csv; charset=utf-8"
+    return output
 
 # ===== حذف رسالة =====
 @app.route('/admin/delete_message/<int:msg_id>')

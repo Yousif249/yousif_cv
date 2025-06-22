@@ -1,188 +1,217 @@
-{% extends "base.html" %}
-{% block title %}Yousif Tariq | Resume - السيرة الذاتية{% endblock %}
-{% block content %}
-<div class="container mt-5 mb-5">
-    <div class="row">
-        <div class="col-md-4 text-center profile-card fade-in-up">
-            <img src="{{ url_for('static', filename='images/goo.jpg') }}" class="rounded-circle mb-3" width="180" alt="صورة شخصية">
-            <h2>Yousif Tariq<br><span class="text-muted" style="font-size:1.2rem;">يوسف طارق</span></h2>
-            <h5 class="text-muted mb-3">Operation Manager<br><span style="font-size:1rem;">مدير عمليات</span></h5>
-            <div class="mb-2 mt-3">
-                <span class="me-2">📧</span> <a href="mailto:coolyosef1@gmail.com" class="text-dark fw-bold">coolyosef1@gmail.com</a>
-                <br>
-                <span class="me-2">📞</span> <span class="fw-bold">+966510026302</span>
-                <br>
-                <span class="me-2">🔗</span>
-                <a href="https://www.linkedin.com/in/YOUR_LINKEDIN" class="fw-bold text-primary" target="_blank">LinkedIn</a>
-            </div>
-            <div class="mt-4">
-                <a href="https://github.com/yourprofile" class="btn btn-dark btn-sm" target="_blank">GitHub</a>
-            </div>
-            <div class="mt-4">
-                <span class="badge bg-primary" style="font-size:1rem;">Arabic & English</span>
-            </div>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}سيرتي الذاتية{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    {% block head %}{% endblock %}
+    <style>
+        .glow-hover:hover, .btn-glow:hover, .profile-card:hover, .project-card:hover, .skills-list:hover, .footer:hover {
+            box-shadow: 0 0 30px 8px #3e82fc45, 0 0 2px 2px #fff;
+            transition: box-shadow 0.3s;
+        }
+        .pulse:active {
+            animation: pulse-btn 0.35s;
+        }
+        @keyframes pulse-btn {
+          0% { transform: scale(1); box-shadow: 0 0 0 0 #3e82fc33;}
+          50% { transform: scale(1.07); box-shadow: 0 0 12px 8px #3e82fc44;}
+          100% { transform: scale(1); box-shadow: 0 0 0 0 #3e82fc33;}
+        }
+        .reveal {
+            opacity: 0;
+            transform: translateY(60px) scale(0.96);
+            transition: opacity 0.7s cubic-bezier(.39,.58,.57,1.2), transform 0.7s cubic-bezier(.39,.58,.57,1.2);
+            will-change: opacity, transform;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        .typed, .typewriter {
+            font-family: 'Fira Mono', 'Tajawal', monospace, Arial;
+            color: #3e82fc;
+            font-weight: 700;
+            background: none;
+            display: inline-block;
+            border-right: 2.5px solid #b995fd;
+            font-size: 1.09em;
+            white-space: nowrap;
+            overflow: hidden;
+            letter-spacing: 1px;
+            animation: blink-caret 0.75s step-end infinite;
+        }
+        @keyframes blink-caret {
+            0%, 100% { border-color: #b995fd; }
+            50% { border-color: transparent; }
+        }
+        .profile-glow {
+            position:absolute;
+            top:-15px;left:-15px;right:-15px;bottom:-15px;
+            z-index:0;
+            border-radius: 2.7em;
+            background: conic-gradient(
+                from 0deg,
+                #b5cbe8 0deg,
+                #3e82fc 120deg,
+                #b5cbe8 240deg,
+                #fff 360deg
+            );
+            filter: blur(20px);
+            opacity: 0.20;
+            transition: opacity 0.4s;
+            pointer-events: none;
+            animation: borderGlowProfile 9s linear infinite;
+        }
+        @keyframes borderGlowProfile {
+            0% { filter: blur(20px) brightness(0.99);}
+            50% { filter: blur(24px) brightness(1.10);}
+            100% { filter: blur(20px) brightness(0.99);}
+        }
+        /* إصلاح الخلفية والتباين للكروت */
+        .container, .profile-card, .project-card, .skills-list, .footer, .alert, ul.project-card, .skills-list {
+            background: #fff !important;
+            color: #23243a !important;
+            border-radius: 1.8em;
+            box-shadow: 0 2px 16px #b5cbe844;
+        }
+        /* زيادة وضوح النصوص */
+        .project-card b, .project-card strong, .project-card ul, .project-card li, .skills-list .skill-badge, .footer {
+            color: #223050 !important;
+            font-weight: 600;
+        }
+        h1, h2, h3, h4 {
+            color: #1d3354 !important;
+            background: none !important;
+            -webkit-background-clip: initial;
+            -webkit-text-fill-color: initial;
+            font-weight: bold;
+            text-shadow: 0 1px 6px #3e82fc11;
+        }
+        .skills-list .skill-badge {
+            background: #eef4fc !important;
+            color: #223050 !important;
+            border: 1.5px solid #b5cbe8 !important;
+        }
+        /* تصغير ظل الحواف */
+        .profile-card, .project-card, .skills-list, .footer {
+            box-shadow: 0 2px 8px #b5cbe822 !important;
+        }
+        /* فورم */
+        .form-control, input, textarea {
+            background: #f3f7fa !important;
+            color: #23243a !important;
+        }
+        label {
+            color: #3e82fc !important;
+        }
+        .alert {
+            background: #f9faff !important;
+            color: #223050 !important;
+            border: 2px solid #b5cbe8 !important;
+        }
+        .btn-glow, .btn {
+            background: linear-gradient(90deg, #eaf0fa 0%, #b5cbe8 100%) !important;
+            color: #223050 !important;
+            border: 2px solid #b5cbe8 !important;
+            box-shadow: 0 1px 8px #b5cbe822 !important;
+        }
+        .btn-glow:hover, .btn:hover {
+            background: linear-gradient(90deg, #3e82fc 0%, #b995fd 100%) !important;
+            color: #fff !important;
+            box-shadow: 0 4px 20px #3e82fc44 !important;
+        }
+        /* منع اخفاء النصوص في القوائم */
+        .project-card ul, .project-card li {
+            overflow: visible !important;
+            white-space: normal !important;
+        }
+        /* استجابة جيدة */
+        @media (max-width: 850px) {
+            .container { padding: 16px 4vw; margin: 20px 0;}
+            h2 { font-size: 1.25em;}
+        }
+        @media (max-width: 600px) {
+            .container { padding: 6vw 1vw; margin: 10px 0;}
+            .skills-list { flex-direction: column; gap: 7px;}
+            .btn { font-size: .98em; padding: 10px 10px;}
+        }
+    </style>
+</head>
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="container mt-3">
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+          {% endfor %}
         </div>
-        <div class="col-md-8 fade-in-up">
-            <!-- Professional Summary -->
-            <h4>Professional Summary <span class="text-muted" style="font-size:0.9rem;">| ملخص احترافي</span></h4>
-            <div class="project-card mb-4">
-                <b>EN:</b>
-                <p>
-                    Experienced Operations Supervisor with over 4 years in valet service management, control room operations, and billing coordination. Proven ability to lead teams of 40+ staff, streamline workflows, and ensure high service standards. Skilled in reporting and data analysis using Power BI and Excel, and continuously advancing in cybersecurity and programming through global learning platforms. Committed to professional growth, problem-solving, and delivering operational excellence.
-                </p>
-                <b>AR:</b>
-                <p>
-                    مشرف عمليات ذو خبرة لأكثر من 4 سنوات في إدارة خدمات الفاليه، غرف التحكم، وتنسيق الفواتير. قدرة مثبتة على قيادة فرق عمل تتجاوز 40 موظفًا، تحسين سير العمليات، وضمان أعلى معايير الخدمة. ماهر في التقارير وتحليل البيانات باستخدام Power BI وExcel، وأسعى باستمرار لتطوير نفسي في الأمن السيبراني والبرمجة عبر منصات التعلم العالمية. ملتزم بالنمو المهني وحل المشكلات وتحقيق التميز التشغيلي.
-                </p>
-            </div>
-            <!-- Experience -->
-            <h4>Experience <span class="text-muted" style="font-size:0.9rem;">| الخبرات العملية</span></h4>
-            <div class="project-card">
-                <b>EN:</b> <strong>Valet Parking Operations Supervisor</strong> (2 Years)<br>
-                <ul>
-                    <li>Supervised daily valet parking operations ensuring smooth service flow and customer satisfaction.</li>
-                    <li>Managed a team of valet attendants, coordinated shift schedules, and handled performance reviews.</li>
-                    <li>Ensured compliance with safety protocols and company standards.</li>
-                    <li>Resolved customer issues promptly and professionally.</li>
-                    <li>Tracked vehicle logs and maintained accurate reporting.</li>
-                </ul>
-                <b>AR:</b> <strong>مشرف عمليات فاليه باركنج</strong> (سنتان)<br>
-                <ul>
-                    <li>إشراف يومي على عمليات الفاليه وضمان سلاسة الخدمة ورضا العملاء.</li>
-                    <li>إدارة فريق من المناديب وتنسيق الجداول ومراجعة الأداء.</li>
-                    <li>الالتزام ببروتوكولات السلامة ومعايير الشركة.</li>
-                    <li>حل مشكلات العملاء بسرعة واحترافية.</li>
-                    <li>متابعة تقارير السيارات بدقة وإعداد التقارير.</li>
-                </ul>
-            </div>
-            <div class="project-card">
-                <b>EN:</b> <strong>Control Room Operator – Valet Parking System</strong><br>
-                <ul>
-                    <li>Monitored valet operations through the control room using the Easy Valet system.</li>
-                    <li>Prepared daily operation reports, account closures, and financial reconciliations.</li>
-                    <li>Ensured accurate data entry and tracking through network-connected systems.</li>
-                    <li>Followed up on real-time performance metrics and system alerts.</li>
-                    <li>Collaborated with on-ground teams to resolve technical or operational issues promptly.</li>
-                </ul>
-                <b>AR:</b> <strong>مشغل غرفة تحكم – نظام الفاليه</strong><br>
-                <ul>
-                    <li>مراقبة عمليات الفاليه عبر غرفة التحكم باستخدام Easy Valet.</li>
-                    <li>إعداد تقارير العمليات اليومية وإغلاق الحسابات وتسوية المالية.</li>
-                    <li>إدخال وتتبع البيانات عبر أنظمة متصلة بالشبكة.</li>
-                    <li>متابعة مؤشرات الأداء الفورية والتنبيهات.</li>
-                    <li>التنسيق مع الفرق الميدانية لحل المشكلات التقنية أو التشغيلية.</li>
-                </ul>
-            </div>
-            <div class="project-card">
-                <b>EN:</b> <strong>Billing Clerk – Manazel Al-Mawaddah (Home Linen Store)</strong> (6 Months)<br>
-                <ul>
-                    <li>Responsible for preparing and issuing customer invoices accurately and on time.</li>
-                    <li>Managed daily sales records and ensured proper documentation of transactions.</li>
-                    <li>Assisted in inventory checks and coordinated with sales staff to verify orders.</li>
-                    <li>Handled basic accounting tasks and operated the cash register.</li>
-                </ul>
-                <b>AR:</b> <strong>كاتب فواتير – منازل المودة (متجر أقمشة منزلية)</strong> (6 أشهر)<br>
-                <ul>
-                    <li>إعداد وإصدار فواتير العملاء بدقة وفي الوقت المحدد.</li>
-                    <li>إدارة سجلات المبيعات اليومية وتوثيق العمليات.</li>
-                    <li>المساعدة في جرد المخزون والتنسيق مع فريق المبيعات.</li>
-                    <li>تنفيذ مهام محاسبية أساسية وتشغيل الكاشير.</li>
-                </ul>
-            </div>
-            <!-- Education -->
-            <h4>Education & Certifications <span class="text-muted" style="font-size:0.9rem;">| التعليم والشهادات</span></h4>
-            <ul>
-                <li><b>EN:</b> Computer Engineering (Undergraduate Studies): Completed 2 years – Not graduated</li>
-                <li><b>AR:</b> هندسة الحاسب (دراسات جامعية): سنتان مكتملة (لم أتخرج)</li>
-                <li>
-                    <b>EN:</b> Ongoing Professional Development via Global Online Platforms:
-                    <ul>
-                        <li>Certificate in Programming</li>
-                        <li>Certificate in English Language Proficiency</li>
-                        <li>Leadership Training Course</li>
-                        <li>Fundamentals of Cybersecurity</li>
-                        <li>Data Analysis & Reporting with Power BI and Excel (Ongoing)</li>
-                    </ul>
-                    <b>AR:</b> تطوير مهني مستمر عبر منصات عالمية:
-                    <ul>
-                        <li>شهادة برمجة</li>
-                        <li>شهادة كفاءة اللغة الإنجليزية</li>
-                        <li>دورة تدريبية في القيادة</li>
-                        <li>أساسيات الأمن السيبراني</li>
-                        <li>تحليل البيانات والتقارير باستخدام Power BI وExcel (قيد الإنجاز)</li>
-                    </ul>
-                </li>
-            </ul>
-            <!-- Skills -->
-            <h4>Key Skills <span class="text-muted" style="font-size:0.9rem;">| المهارات</span></h4>
-            <div class="skills-list mb-3">
-                <span class="skill-badge">Team Leadership & Supervision<br>قيادة الفرق والإشراف</span>
-                <span class="skill-badge">Operations & Control Room<br>إدارة العمليات وغرف التحكم</span>
-                <span class="skill-badge">Customer Service<br>خدمة العملاء</span>
-                <span class="skill-badge">Billing & Financial Reconciliation<br>الفوترة والتسويات المالية</span>
-                <span class="skill-badge">Report Preparation & Data Analysis<br>إعداد التقارير وتحليل البيانات</span>
-                <span class="skill-badge">Microsoft Excel & Power BI</span>
-                <span class="skill-badge">Cybersecurity Fundamentals<br>أساسيات الأمن السيبراني</span>
-                <span class="skill-badge">Communication & English<br>مهارات التواصل والإنجليزية</span>
-                <span class="skill-badge">Adaptability & Continuous Learning<br>القدرة على التكيف والتعلم المستمر</span>
-                <span class="skill-badge">Time Management & Problem Solving<br>إدارة الوقت وحل المشكلات</span>
-            </div>
-            <!-- Interests -->
-            <h4>Interests <span class="text-muted" style="font-size:0.9rem;">| الاهتمامات</span></h4>
-            <ul>
-                <li>EN: Continuous learning to gain new skills and grow in a competitive environment.</li>
-                <li>AR: التعلم المستمر لاكتساب مهارات جديدة والنمو في بيئة تنافسية.</li>
-            </ul>
-            <!-- Languages -->
-            <h4>Languages <span class="text-muted" style="font-size:0.9rem;">| اللغات</span></h4>
-            <ul>
-                <li>EN: Arabic: Native | English: Good proficiency</li>
-                <li>AR: العربية: اللغة الأم | الإنجليزية: إجادة جيدة</li>
-            </ul>
-        </div>
-    </div>
-    <hr>
-    <div class="row mt-5 fade-in-up">
-        <div class="col-md-8 offset-md-2">
-            <h3 class="mb-4">Contact Me | تواصل معنا</h3>
-            <form method="POST" novalidate>
-                {{ form.hidden_tag() }}
-                <div class="mb-3">
-                    {{ form.full_name.label(class="form-label") }}
-                    {{ form.full_name(class="form-control") }}
-                    {% for err in form.full_name.errors %}
-                        <div class="text-danger">{{ err }}</div>
-                    {% endfor %}
-                </div>
-                <div class="mb-3">
-                    {{ form.phone.label(class="form-label") }}
-                    {{ form.phone(class="form-control") }}
-                    {% for err in form.phone.errors %}
-                        <div class="text-danger">{{ err }}</div>
-                    {% endfor %}
-                </div>
-                <div class="mb-3">
-                    {{ form.email.label(class="form-label") }}
-                    {{ form.email(class="form-control") }}
-                    {% for err in form.email.errors %}
-                        <div class="text-danger">{{ err }}</div>
-                    {% endfor %}
-                </div>
-                <div class="mb-3">
-                    {{ form.message.label(class="form-label") }}
-                    {{ form.message(class="form-control", rows=4) }}
-                    {% for err in form.message.errors %}
-                        <div class="text-danger">{{ err }}</div>
-                    {% endfor %}
-                </div>
-                <div>
-                    {{ form.submit(class="btn btn-success") }}
-                </div>
-            </form>
-        </div>
-    </div>
-    <div class="footer mt-4">
-        &copy; 2025 - جميع الحقوق محفوظة لـ Yousif Tariq
-    </div>
-</div>
-{% endblock %}
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    // ظهور تدريجي للعناصر عند التمرير
+    document.addEventListener('DOMContentLoaded', function() {
+        function revealOnScroll() {
+            document.querySelectorAll('.reveal').forEach(function(el) {
+                const windowHeight = window.innerHeight;
+                const elementTop = el.getBoundingClientRect().top;
+                if (elementTop < windowHeight - 90) {
+                    el.classList.add('active');
+                }
+            });
+        }
+        window.addEventListener('scroll', revealOnScroll);
+        revealOnScroll();
+
+        // وهج متحرك حول البطاقة الشخصية عند المرور
+        const profileCard = document.querySelector('.profile-card');
+        if (profileCard) {
+            profileCard.addEventListener('mouseenter', function() {
+                let glow = profileCard.querySelector('.profile-glow');
+                if(glow) glow.style.opacity = 0.55;
+            });
+            profileCard.addEventListener('mouseleave', function() {
+                let glow = profileCard.querySelector('.profile-glow');
+                if(glow) glow.style.opacity = 0.20;
+            });
+        }
+
+        // تأثير نبض للأزرار عند النقر
+        document.querySelectorAll('.btn, .btn-glow').forEach(function(btn) {
+            btn.addEventListener('mousedown', function() {
+                btn.classList.add('pulse');
+            });
+            btn.addEventListener('animationend', function() {
+                btn.classList.remove('pulse');
+            });
+        });
+
+        // تأثير اضاءة للفوتر كل عدة ثوانٍ
+        const footer = document.querySelector('.footer');
+        if (footer) {
+            setInterval(() => {
+                footer.style.boxShadow = "0 0 18px 7px #3e82fc55";
+                setTimeout(() => { footer.style.boxShadow = ""; }, 700);
+            }, 2600);
+        }
+
+        // تأثير الكتابة لكلمات typewriter/typed
+        function typeWriter(el, text, speed=55, i=0) {
+            if (i < text.length) {
+                el.textContent += text.charAt(i);
+                setTimeout(() => typeWriter(el, text, speed, i + 1), speed);
+            }
+        }
+        document.querySelectorAll('.typewriter, .typed').forEach(function(el) {
+            const text = el.dataset.text || el.textContent;
+            el.textContent = '';
+            typeWriter(el, text);
+        });
+    });
+    </script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>
