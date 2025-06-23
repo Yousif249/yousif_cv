@@ -29,7 +29,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 app = Flask(__name__)
 
 # استخدام متغيرات البيئة للتهيئة
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'your_super_secret_key_here_for_dev')
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'your_super_secret_key_here_for_development_only')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///site.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -39,20 +39,26 @@ login_manager.login_view = 'admin_login'
 
 # تهيئة خط يدعم العربية لـ ReportLab (PDF)
 try:
-    # استخدام خط Tajawal الموجود في static/css/
-    # تأكد من وجود ملف الخط في مجلد static/fonts/
-    # يمكنك تحميله من Google Fonts ووضعه في static/fonts/
-    pdfmetrics.registerFont(TTFont('Tajawal', 'static/fonts/Tajawal-Regular.ttf'))
-    pdfmetrics.registerFont(TTFont('Tajawal-Bold', 'static/fonts/Tajawal-Bold.ttf'))
+    # استخدام os.path.join و app.root_path للحصول على المسار المطلق للخط
+    tajawal_regular_path = os.path.join(app.root_path, 'static', 'fonts', 'Tajawal-Regular.ttf')
+    tajawal_bold_path = os.path.join(app.root_path, 'static', 'fonts', 'Tajawal-Bold.ttf')
+
+    pdfmetrics.registerFont(TTFont('Tajawal', tajawal_regular_path))
+    pdfmetrics.registerFont(TTFont('Tajawal-Bold', tajawal_bold_path))
     ARABIC_FONT = 'Tajawal'
     ARABIC_FONT_BOLD = 'Tajawal-Bold'
 except Exception as e:
     app.logger.warning(f"تحذير: لم يتم العثور على خط 'Tajawal-Regular.ttf' أو 'Tajawal-Bold.ttf'. قد لا يتم عرض العربية بشكل صحيح في PDF. يرجى التأكد من توفر الخطوط في مجلد 'static/fonts/'. الخطأ: {e}")
     # fallback to a generic font if custom font fails
-    pdfmetrics.registerFont(TTFont('DejaVuSans', 'DejaVuSans.ttf'))
-    ARABIC_FONT = 'DejaVuSans'
+    # تأكد من توفر هذه الخطوط أيضًا في static/fonts/ إذا كنت تستخدمها كبديل
+    # إذا لم يكن DejaVuSans.ttf موجوداً في static/fonts/، فسيستمر هذا الخطأ.
+    # الحل الأفضل هو التأكد من وجود Tajawal أو استبدال هذا بخط نظام شائع
+    dejavu_path = os.path.join(app.root_path, 'static', 'fonts', 'DejaVuSans.ttf')
+    dejavu_bold_path = os.path.join(app.root_path, 'static', 'fonts', 'DejaVuSans-Bold.ttf')
+    pdfmetrics.registerFont(TTFont('DejaVuSans', dejavu_path))
     app.logger.warning("تحذير: لم يتم العثور على خط 'DejaVuSans.ttf'. قد لا يتم عرض العربية بشكل صحيح في PDF. يرجى التأكد من توفر خط يدعم اللغة العربية (مثل Noto Sans Arabic) في نظامك أو ضمن مجلد التطبيق.")
-    pdfmetrics.registerFont(TTFont('DejaVuSans-Bold', 'DejaVuSans-Bold.ttf'))
+    pdfmetrics.registerFont(TTFont('DejaVuSans-Bold', dejavu_bold_path))
+    ARABIC_FONT = 'DejaVuSans'
     ARABIC_FONT_BOLD = 'DejaVuSans-Bold'
 
 
