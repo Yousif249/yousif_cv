@@ -18,7 +18,6 @@ class AdminLoginForm(FlaskForm):
     username = StringField('اسم المستخدم', validators=[DataRequired('اسم المستخدم مطلوب.')])
     password = PasswordField('كلمة المرور', validators=[DataRequired('كلمة المرور مطلوبة.')])
     submit = SubmitField('تسجيل الدخول')
-
 # تعريف نموذج تعديل بيانات الأدمن
 class EditAdminForm(FlaskForm):
     new_username = StringField('اسم المستخدم الجديد', validators=[DataRequired('اسم المستخدم الجديد مطلوب.')])
