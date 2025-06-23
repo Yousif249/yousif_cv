@@ -1,31 +1,43 @@
+{# -*- coding: utf-8 -*- #}
+{# templates/admin_login.html - Cosmic Theme #}
+
 {% extends "base.html" %}
+
 {% block title %}تسجيل دخول الأدمن{% endblock %}
+
 {% block content %}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-5">
-            <h3 class="mb-4 text-center">تسجيل دخول الأدمن</h3>
-            <form method="POST" novalidate>
-                {{ form.hidden_tag() }}
-                <div class="mb-3">
-                    {{ form.username.label(class="form-label") }}
-                    {{ form.username(class="form-control") }}
-                    {% for err in form.username.errors %}
-                        <div class="text-danger">{{ err }}</div>
-                    {% endfor %}
-                </div>
-                <div class="mb-3">
-                    {{ form.password.label(class="form-label") }}
-                    {{ form.password(class="form-control") }}
-                    {% for err in form.password.errors %}
-                        <div class="text-danger">{{ err }}</div>
-                    {% endfor %}
-                </div>
-                <div>
-                    {{ form.submit(class="btn btn-primary w-100") }}
-                </div>
-            </form>
-        </div>
+    <div class="admin-auth-container cv-section"> {# أضف cv-section هنا للسماح بتأثير الكشف #}
+        <h2 class="cv-section-title">تسجيل دخول الأدمن</h2>
+        <form method="POST" action="{{ url_for('admin_login') }}" class="auth-form">
+            {{ form.csrf_token }}
+
+            <div class="form-group">
+                {{ form.username.label }}
+                {{ form.username(class="form-control", placeholder="اسم المستخدم") }}
+                {% if form.username.errors %}
+                    <ul class="errors">
+                        {% for error in form.username.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.password.label }}
+                {{ form.password(class="form-control", placeholder="كلمة المرور") }}
+                {% if form.password.errors %}
+                    <ul class="errors">
+                        {% for error in form.password.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.submit(class="btn-primary") }}
+            </div>
+        </form>
     </div>
-</div>
 {% endblock %}

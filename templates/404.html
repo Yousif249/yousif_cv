@@ -1,9 +1,69 @@
+{# -*- coding: utf-8 -*- #}
+{# templates/404.html - Used as Contact Page (Cosmic Theme) #}
+
 {% extends "base.html" %}
-{% block title %}خطأ 404 - الصفحة غير موجودة{% endblock %}
+
+{% block title %}تواصل معي{% endblock %}
+
 {% block content %}
-<div class="container mt-5 text-center">
-    <h1 class="display-3 text-danger">404</h1>
-    <p class="lead">عذراً، الصفحة التي طلبتها غير موجودة.</p>
-    <a href="{{ url_for('index') }}" class="btn btn-primary mt-3">العودة للصفحة الرئيسية</a>
-</div>
+    <div class="contact-page cv-section"> {# أضف cv-section هنا للسماح بتأثير الكشف #}
+        <h2 class="cv-section-title">تواصل معي</h2>
+        <p class="cv-summary">يسعدني تلقي رسائلك واستفساراتك. يرجى ملء النموذج أدناه:</p>
+
+        <form method="POST" action="{{ url_for('contact') }}" class="contact-form">
+            {{ form.csrf_token }} {# حقل CSRF Token لحماية النموذج #}
+
+            <div class="form-group">
+                {{ form.name.label }}
+                {{ form.name(class="form-control", placeholder="ادخل اسمك") }}
+                {% if form.name.errors %}
+                    <ul class="errors">
+                        {% for error in form.name.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.phone.label }}
+                {{ form.phone(class="form-control", placeholder="ادخل رقم جوالك") }}
+                {% if form.phone.errors %}
+                    <ul class="errors">
+                        {% for error in form.phone.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.email.label }}
+                {{ form.email(class="form-control", placeholder="ادخل بريدك الإلكتروني") }}
+                {% if form.email.errors %}
+                    <ul class="errors">
+                        {% for error in form.email.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.message.label }}
+                {{ form.message(class="form-control", rows="5", placeholder="اكتب رسالتك هنا") }}
+                {% if form.message.errors %}
+                    <ul class="errors">
+                        {% for error in form.message.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.submit(class="btn-primary") }} {# استخدام btn-primary مباشرة #}
+            </div>
+        </form>
+    </div>
 {% endblock %}

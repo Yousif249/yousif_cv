@@ -1,217 +1,145 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <title>{% block title %}سيرتي الذاتية{% endblock %}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    {% block head %}{% endblock %}
-    <style>
-        .glow-hover:hover, .btn-glow:hover, .profile-card:hover, .project-card:hover, .skills-list:hover, .footer:hover {
-            box-shadow: 0 0 30px 8px #3e82fc45, 0 0 2px 2px #fff;
-            transition: box-shadow 0.3s;
-        }
-        .pulse:active {
-            animation: pulse-btn 0.35s;
-        }
-        @keyframes pulse-btn {
-          0% { transform: scale(1); box-shadow: 0 0 0 0 #3e82fc33;}
-          50% { transform: scale(1.07); box-shadow: 0 0 12px 8px #3e82fc44;}
-          100% { transform: scale(1); box-shadow: 0 0 0 0 #3e82fc33;}
-        }
-        .reveal {
-            opacity: 0;
-            transform: translateY(60px) scale(0.96);
-            transition: opacity 0.7s cubic-bezier(.39,.58,.57,1.2), transform 0.7s cubic-bezier(.39,.58,.57,1.2);
-            will-change: opacity, transform;
-        }
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
-        .typed, .typewriter {
-            font-family: 'Fira Mono', 'Tajawal', monospace, Arial;
-            color: #3e82fc;
-            font-weight: 700;
-            background: none;
-            display: inline-block;
-            border-right: 2.5px solid #b995fd;
-            font-size: 1.09em;
-            white-space: nowrap;
-            overflow: hidden;
-            letter-spacing: 1px;
-            animation: blink-caret 0.75s step-end infinite;
-        }
-        @keyframes blink-caret {
-            0%, 100% { border-color: #b995fd; }
-            50% { border-color: transparent; }
-        }
-        .profile-glow {
-            position:absolute;
-            top:-15px;left:-15px;right:-15px;bottom:-15px;
-            z-index:0;
-            border-radius: 2.7em;
-            background: conic-gradient(
-                from 0deg,
-                #b5cbe8 0deg,
-                #3e82fc 120deg,
-                #b5cbe8 240deg,
-                #fff 360deg
-            );
-            filter: blur(20px);
-            opacity: 0.20;
-            transition: opacity 0.4s;
-            pointer-events: none;
-            animation: borderGlowProfile 9s linear infinite;
-        }
-        @keyframes borderGlowProfile {
-            0% { filter: blur(20px) brightness(0.99);}
-            50% { filter: blur(24px) brightness(1.10);}
-            100% { filter: blur(20px) brightness(0.99);}
-        }
-        /* إصلاح الخلفية والتباين للكروت */
-        .container, .profile-card, .project-card, .skills-list, .footer, .alert, ul.project-card, .skills-list {
-            background: #fff !important;
-            color: #23243a !important;
-            border-radius: 1.8em;
-            box-shadow: 0 2px 16px #b5cbe844;
-        }
-        /* زيادة وضوح النصوص */
-        .project-card b, .project-card strong, .project-card ul, .project-card li, .skills-list .skill-badge, .footer {
-            color: #223050 !important;
-            font-weight: 600;
-        }
-        h1, h2, h3, h4 {
-            color: #1d3354 !important;
-            background: none !important;
-            -webkit-background-clip: initial;
-            -webkit-text-fill-color: initial;
-            font-weight: bold;
-            text-shadow: 0 1px 6px #3e82fc11;
-        }
-        .skills-list .skill-badge {
-            background: #eef4fc !important;
-            color: #223050 !important;
-            border: 1.5px solid #b5cbe8 !important;
-        }
-        /* تصغير ظل الحواف */
-        .profile-card, .project-card, .skills-list, .footer {
-            box-shadow: 0 2px 8px #b5cbe822 !important;
-        }
-        /* فورم */
-        .form-control, input, textarea {
-            background: #f3f7fa !important;
-            color: #23243a !important;
-        }
-        label {
-            color: #3e82fc !important;
-        }
-        .alert {
-            background: #f9faff !important;
-            color: #223050 !important;
-            border: 2px solid #b5cbe8 !important;
-        }
-        .btn-glow, .btn {
-            background: linear-gradient(90deg, #eaf0fa 0%, #b5cbe8 100%) !important;
-            color: #223050 !important;
-            border: 2px solid #b5cbe8 !important;
-            box-shadow: 0 1px 8px #b5cbe822 !important;
-        }
-        .btn-glow:hover, .btn:hover {
-            background: linear-gradient(90deg, #3e82fc 0%, #b995fd 100%) !important;
-            color: #fff !important;
-            box-shadow: 0 4px 20px #3e82fc44 !important;
-        }
-        /* منع اخفاء النصوص في القوائم */
-        .project-card ul, .project-card li {
-            overflow: visible !important;
-            white-space: normal !important;
-        }
-        /* استجابة جيدة */
-        @media (max-width: 850px) {
-            .container { padding: 16px 4vw; margin: 20px 0;}
-            h2 { font-size: 1.25em;}
-        }
-        @media (max-width: 600px) {
-            .container { padding: 6vw 1vw; margin: 10px 0;}
-            .skills-list { flex-direction: column; gap: 7px;}
-            .btn { font-size: .98em; padding: 10px 10px;}
-        }
-    </style>
-</head>
-<body>
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        <div class="container mt-3">
-          {% for category, message in messages %}
-            <div class="alert alert-{{ category }}">{{ message }}</div>
-          {% endfor %}
+{# -*- coding: utf-8 -*- #}
+{# templates/index.html - Cosmic Theme #}
+
+{% extends "base.html" %}
+
+{% block title %}السيرة الذاتية - يوسف طارق{% endblock %}
+
+{% block content %}
+    <div class="cv-page"> {# هذا الـ div سيأخذ تنسيقات .container من base.html #}
+        <header class="cv-header">
+            {# تأكد من وجود الصورة goo.jpg في static/images/ #}
+            <img src="{{ url_for('static', filename='images/goo.jpg') }}" alt="صورة الملف الشخصي ليوسف طارق" class="cv-header-photo">
+            <div class="cv-header-main">
+                <h1 class="cv-name">يوسف طارق</h1>
+                <p class="cv-title">OPERATION MANAGER</p>
+                <div class="cv-contact-list">
+                    <p><i class="fas fa-envelope"></i> <a href="mailto:coolyosef1@gmail.com">coolyosef1@gmail.com</a></p>
+                    <p><i class="fas fa-phone-alt"></i> +966510026302</p>
+                    {# رابط LinkedIn، تأكد من استبدال # برابطك الحقيقي #}
+                    <p><i class="fab fa-linkedin"></i> <a href="https://www.linkedin.com/in/yousif-tariq/" target="_blank">LinkedIn</a></p>
+                </div>
+            </div>
+        </header>
+
+        <section class="professional-summary cv-section">
+            <h2 class="cv-section-title">ملخص احترافي</h2>
+            <p class="cv-summary">
+                Experienced Operations Supervisor with over 4 years in valet service management, control room
+                operations, and billing coordination. Proven ability to lead teams of 40+ staff, streamline
+                workflows, and ensure high service standards. Skilled in reporting, data analysis using Power BI
+                and Excel, and continuously advancing in cybersecurity and programming through global
+                learning platforms. Committed to professional growth, problem-solving, and delivering
+                operational excellence.
+            </p>
+        </section>
+
+        <section class="experience cv-section">
+            <h2 class="cv-section-title">الخبرة المهنية</h2>
+
+            <ul class="cv-experience-list">
+                <li class="cv-experience-item">
+                    <h3 class="cv-job-title">Valet Parking Operations Supervisor</h3>
+                    <span class="cv-job-duration">2 Years of Experience</span>
+                    <ul class="cv-job-details">
+                        <li>Supervised daily valet parking operations ensuring smooth service flow and customer satisfaction.</li>
+                        <li>Managed a team of valet attendants, coordinated shift schedules, and handled performance reviews.</li>
+                        <li>Ensured compliance with safety protocols and company standards.</li>
+                        <li>Resolved customer issues promptly and professionally.</li>
+                        <li>Tracked vehicle logs and maintained accurate reporting.</li>
+                    </ul>
+                </li>
+
+                <li class="cv-experience-item">
+                    <h3 class="cv-job-title">Control Room Operator – Valet Parking System</h3>
+                    <span class="cv-job-duration">Prior Experience</span>
+                    <ul class="cv-job-details">
+                        <li>Monitored valet operations through the control room using the Easy Valet system.</li>
+                        <li>Prepared daily operation reports, account closures, and financial reconciliations.</li>
+                        <li>Ensured accurate data entry and tracking through network-connected systems.</li>
+                        <li>Followed up on real-time performance metrics and system alerts.</li>
+                        <li>Collaborated with on-ground teams to resolve technical or operational issues promptly.</li>
+                    </ul>
+                </li>
+
+                <li class="cv-experience-item">
+                    <h3 class="cv-job-title">Billing Clerk – Manazel Al-Mawaddah (Home Linen Store)</h3>
+                    <span class="cv-job-duration">6 Months of Experience</span>
+                    <ul class="cv-job-details">
+                        <li>Responsible for preparing and issuing customer invoices accurately and on time.</li>
+                        <li>Managed daily sales records and ensured proper documentation of transactions.</li>
+                        <li>Assisted in inventory checks and coordinated with sales staff to verify orders.</li>
+                        <li>Handled basic accounting tasks and operated the cash register.</li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+
+        <section class="education-certifications cv-section">
+            <h2 class="cv-section-title">التعليم والشهادات</h2>
+
+            <ul class="cv-education-list">
+                <li class="cv-education-item">
+                    <h3 class="cv-education-title">Computer Engineering (Undergraduate Studies)</h3>
+                    <p class="cv-education-meta">Completed 2 years – Not graduated</p>
+                </li>
+
+                <li class="cv-education-item">
+                    <h3 class="cv-education-title">Ongoing Professional Development via Global Online Platforms</h3>
+                    <ul class="cv-job-details"> {# reuse job-details styling for list items #}
+                        <li>Certificate in Programming</li>
+                        <li>Certificate in English Language Proficiency</li>
+                        <li>Leadership Training Course</li>
+                        <li>Fundamentals of Cybersecurity</li>
+                        <li>Data Analysis & Reporting with Power BI and Excel (Ongoing)</li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+
+        <section class="key-skills cv-section">
+            <h2 class="cv-section-title">المهارات الرئيسية</h2>
+            <div class="cv-skills-list">
+                <span class="cv-skill-badge">Team Leadership & Staff Supervision (40+ employees)</span>
+                <span class="cv-skill-badge">Operations & Control Room Management</span>
+                <span class="cv-skill-badge">Customer Service & Issue Resolution</span>
+                <span class="cv-skill-badge">Billing & Financial Reconciliation</span>
+                <span class="cv-skill-badge">Report Preparation & Data Analysis</span>
+                <span class="cv-skill-badge">Microsoft Excel & Power BI (Basic to Intermediate)</span>
+                <span class="cv-skill-badge">Cybersecurity Fundamentals</span>
+                <span class="cv-skill-badge">Communication & English Language Skills</span>
+                <span class="cv-skill-badge">Adaptability & Continuous Learning</span>
+                <span class="cv-skill-badge">Time Management & Problem Solving</span>
+            </div>
+        </section>
+
+        <section class="interests cv-section">
+            <h2 class="cv-section-title">الاهتمامات</h2>
+            <div class="cv-interests-list">
+                <span class="cv-interest-badge">Continuous learning to gain new skills and grow in a competitive environment</span>
+            </div>
+        </section>
+
+        <section class="languages cv-section">
+            <h2 class="cv-section-title">اللغات</h2>
+            <div class="cv-languages-list">
+                <span class="cv-language-badge native">Arabic: Native</span>
+                <span class="cv-language-badge good">English: Good proficiency</span>
+            </div>
+        </section>
+
+        <section class="social-links cv-section">
+            <h2 class="cv-section-title">تواصل معي عبر الشبكات الاجتماعية</h2>
+            {# روابط مواقع التواصل الاجتماعي، استبدل "#" بالروابط الحقيقية #}
+            <a href="#" target="_blank"><i class="fab fa-facebook"></i> فيسبوك</a>
+            <a href="#" target="_blank"><i class="fab fa-instagram"></i> انستجرام</a>
+            <a href="#" target="_blank"><i class="fab fa-whatsapp"></i> واتساب</a>
+            <a href="#" target="_blank"><i class="fab fa-twitter"></i> تويتر</a>
+            <a href="#" target="_blank"><i class="fab fa-github"></i> جيثب</a>
+        </section>
+
+        <div class="contact-button-container">
+            <a href="{{ url_for('contact') }}" class="contact-button">للتواصل اضغط هنا</a>
         </div>
-      {% endif %}
-    {% endwith %}
-    {% block content %}{% endblock %}
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-    // ظهور تدريجي للعناصر عند التمرير
-    document.addEventListener('DOMContentLoaded', function() {
-        function revealOnScroll() {
-            document.querySelectorAll('.reveal').forEach(function(el) {
-                const windowHeight = window.innerHeight;
-                const elementTop = el.getBoundingClientRect().top;
-                if (elementTop < windowHeight - 90) {
-                    el.classList.add('active');
-                }
-            });
-        }
-        window.addEventListener('scroll', revealOnScroll);
-        revealOnScroll();
-
-        // وهج متحرك حول البطاقة الشخصية عند المرور
-        const profileCard = document.querySelector('.profile-card');
-        if (profileCard) {
-            profileCard.addEventListener('mouseenter', function() {
-                let glow = profileCard.querySelector('.profile-glow');
-                if(glow) glow.style.opacity = 0.55;
-            });
-            profileCard.addEventListener('mouseleave', function() {
-                let glow = profileCard.querySelector('.profile-glow');
-                if(glow) glow.style.opacity = 0.20;
-            });
-        }
-
-        // تأثير نبض للأزرار عند النقر
-        document.querySelectorAll('.btn, .btn-glow').forEach(function(btn) {
-            btn.addEventListener('mousedown', function() {
-                btn.classList.add('pulse');
-            });
-            btn.addEventListener('animationend', function() {
-                btn.classList.remove('pulse');
-            });
-        });
-
-        // تأثير اضاءة للفوتر كل عدة ثوانٍ
-        const footer = document.querySelector('.footer');
-        if (footer) {
-            setInterval(() => {
-                footer.style.boxShadow = "0 0 18px 7px #3e82fc55";
-                setTimeout(() => { footer.style.boxShadow = ""; }, 700);
-            }, 2600);
-        }
-
-        // تأثير الكتابة لكلمات typewriter/typed
-        function typeWriter(el, text, speed=55, i=0) {
-            if (i < text.length) {
-                el.textContent += text.charAt(i);
-                setTimeout(() => typeWriter(el, text, speed, i + 1), speed);
-            }
-        }
-        document.querySelectorAll('.typewriter, .typed').forEach(function(el) {
-            const text = el.dataset.text || el.textContent;
-            el.textContent = '';
-            typeWriter(el, text);
-        });
-    });
-    </script>
-    {% block scripts %}{% endblock %}
-</body>
-</html>
+    </div>
+{% endblock %}

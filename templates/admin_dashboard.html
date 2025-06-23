@@ -1,60 +1,59 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <title>لوحة تحكم الأدمن</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-</head>
-<body>
-    <div class="container">
-        <h2>لوحة تحكم الأدمن</h2>
-        <a href="{{ url_for('admin_logout') }}" class="btn btn-danger float-end">تسجيل خروج</a>
-        <a href="{{ url_for('edit_admin') }}" class="btn btn-glow float-end">⚙️ تعديل بيانات الأدمن</a>
-        <a href="{{ url_for('download_messages') }}" class="btn btn-glow float-end">⬇️ تنزيل كل الرسائل (CSV)</a>
-        <div style="clear:both;"></div>
-        <h4>رسائل التواصل</h4>
-        <table class="admin-table">
-            <thead>
-                <tr>
-                    <th>الاسم</th>
-                    <th>الجوال</th>
-                    <th>البريد</th>
-                    <th>الرسالة</th>
-                    <th>التاريخ</th>
-                    <th>حذف</th>
-                    <th>أرشفة</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for msg in messages %}
-                <tr>
-                    <td>{{ msg.full_name }}</td>
-                    <td>{{ msg.phone }}</td>
-                    <td>{{ msg.email }}</td>
-                    <td style="max-width:180px;overflow-wrap:anywhere;">{{ msg.message }}</td>
-                    <td>{{ msg.date_sent.strftime('%Y-%m-%d %H:%M') if msg.date_sent else '' }}</td>
-                    <td>
-                        <a href="{{ url_for('delete_message', msg_id=msg.id) }}" class="btn btn-danger btn-sm" title="حذف">
-                            🗑️
-                        </a>
-                    </td>
-                    <td>
-                        <a href="{{ url_for('archive_message', msg_id=msg.id) }}" class="btn btn-warning btn-sm" title="أرشفة">
-                            أرشفة
-                        </a>
-                    </td>
-                </tr>
-                {% else %}
-                <tr>
-                    <td colspan="7" style="text-align:center;">لا توجد رسائل بعد</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <hr>
-        <h4>إحصائيات الزيارات</h4>
-        <p>عدد الزيارات: {{ visits_count }}</p>
-        <!-- يمكن وضع رسم بياني هنا -->
+{# -*- coding: utf-8 -*- #}
+{# templates/admin_dashboard.html - Cosmic Theme #}
+
+{% extends "base.html" %}
+
+{% block title %}لوحة تحكم الأدمن{% endblock %}
+
+{% block content %}
+    <div class="admin-dashboard-page cv-section"> {# أضف cv-section هنا للسماح بتأثير الكشف #}
+        <h2 class="cv-section-title">لوحة تحكم الأدمن</h2>
+
+        <div class="stats-section">
+            <div class="stat-box">
+                <h3>إجمالي عدد الزيارات</h3>
+                <p class="stat-number">{{ total_visitors }}</p>
+            </div>
+        </div>
+
+        <div class="messages-section">
+            <h3 class="cv-section-title">رسائل الاتصال</h3>
+            {% if messages %}
+                <div class="export-buttons-container">
+                    <a href="{{ url_for('export_excel') }}" class="export-btn btn-glow"><i class="fas fa-file-excel"></i> تصدير إلى Excel</a>
+                    <a href="{{ url_for('export_word') }}" class="export-btn btn-glow"><i class="fas fa-file-word"></i> تصدير إلى Word</a>
+                    <a href="{{ url_for('export_pdf') }}" class="export-btn btn-glow"><i class="fas fa-file-pdf"></i> تصدير إلى PDF</a>
+                </div>
+                
+                <div class="table-responsive">
+                    <table class="messages-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>الاسم</th>
+                                <th>الجوال</th>
+                                <th>البريد الإلكتروني</th>
+                                <th>الرسالة</th>
+                                <th>التاريخ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for message in messages %}
+                                <tr>
+                                    <td>{{ message.id }}</td>
+                                    <td>{{ message.name }}</td>
+                                    <td>{{ message.phone }}</td>
+                                    <td>{{ message.email }}</td>
+                                    <td>{{ message.message }}</td>
+                                    <td>{{ message.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="no-messages-alert">لا توجد رسائل اتصال حتى الآن.</p>
+            {% endif %}
+        </div>
     </div>
-</body>
-</html>
+{% endblock %}

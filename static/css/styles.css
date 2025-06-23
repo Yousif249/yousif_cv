@@ -1,233 +1,660 @@
+/* -*- coding: utf-8 -*- */
+/* static/css/styles.css - Cosmic Theme with Custom Background */
+
 @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@500;700;900&family=Fira+Mono:wght@500&display=swap');
 
-/* أساسيات الصفحة */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    scroll-behavior: smooth;
-}
-
+/* --- Cosmic Space Background & Galaxy Animation --- */
 body {
     font-family: 'Tajawal', Arial, Helvetica, sans-serif;
-    background: linear-gradient(135deg, #f6fbff 0%, #e8eff7 100%);
     min-height: 100vh;
-    color: #26304a;
-    line-height: 1.85;
-    overflow-x: hidden;
+    margin: 0;
+    color: #e4e9ff; /* لون نص فاتح ليتناسب مع الخلفية الداكنة */
+    background: radial-gradient(ellipse at 60% 30%, #343a60 0%, #232347 80%) fixed;
     position: relative;
-}
-
-/* توهج ثابت وناعم للحاويات */
-.container, .profile-card, .project-card, .skills-list, .footer {
-    background: #fff;
-    border-radius: 2em;
-    position: relative;
-    box-shadow: 0 8px 32px #b5cbe830, 0 1.5px 6px #3e82fc18;
-    border: 2px solid #e7f1fa;
-    z-index: 2;
-    overflow: hidden;
-    margin-bottom: 28px;
-    padding: 32px 26px 20px 26px;
-    transition: box-shadow 0.3s, border 0.3s;
-}
-
-.profile-card, .project-card, .skills-list, .footer {
-    box-shadow: 0 2px 12px #3e82fc18, 0 1px 4px #b5cbe818;
-    padding-top: 22px;
-    padding-bottom: 18px;
-    background: #fafdff;
-}
-
-.profile-card {
-    margin-bottom: 36px;
-    padding-bottom: 22px;
-    background: linear-gradient(120deg, #fafdff 60%, #e8f0fa 100%);
-}
-
-/* عناوين هادئة مع لمسة فخمة */
-h1, h2, h3, h4 {
-    font-family: 'Tajawal', Arial, Helvetica, sans-serif;
-    font-weight: 900;
-    color: #2e3a55;
-    text-align: center;
-    margin-bottom: 23px;
-    letter-spacing: 1px;
-    text-shadow: 0 2px 12px #b5cbe811;
-}
-
-/* خطوط ثانوية */
-.text-muted, .project-card b, .project-card strong, .skills-list .skill-badge, .footer, label, .form-label {
-    color: #4c5b77 !important;
-}
-
-hr {
-    border: none;
-    border-top: 2px dashed #d7e3f3;
-    margin: 36px 0 18px 0;
-}
-
-/* مهارة الكتابة - يظهر النص حرفاً حرفاً */
-.typewriter, .typed {
-    font-family: 'Fira Mono', 'Tajawal', monospace, Arial;
-    color: #285b9a;
-    font-weight: 900;
-    border-right: 2.5px solid #b5cbe8;
-    font-size: 1.13em;
-    white-space: nowrap;
-    overflow: hidden;
-    display: inline-block;
-    letter-spacing: 1px;
-    animation: blink-caret 0.85s step-end infinite;
-    background: none;
-}
-@keyframes blink-caret {
-    0%, 100% { border-color: #b5cbe8; }
-    50% { border-color: transparent; }
-}
-
-/* أزرار فخمة وناعمة */
-.btn, .btn-glow {
-    display: inline-block;
-    padding: 13px 30px;
-    border-radius: 32px;
-    font-size: 1.07em;
-    font-weight: bold;
-    text-decoration: none;
-    border: 2px solid #d7e3f3;
-    box-shadow: 0 2px 18px #b5cbe822;
-    transition: all 0.18s cubic-bezier(.5,.1,.45,1.4);
-    margin-left: 7px;
-    margin-bottom: 11px;
-    cursor: pointer;
-    background: linear-gradient(90deg, #f6fbff 0%, #e7f1fa 100%);
-    color: #23304a;
-}
-.btn-glow {
-    background: linear-gradient(90deg, #e7f1fa 0%, #d6e7fa 100%);
-    color: #2d3d5c;
-    border: 2px solid #b5cbe8;
-    box-shadow: 0 4px 24px #b5cbe822;
-}
-.btn-glow:hover, .btn:hover {
-    background: linear-gradient(90deg, #b5cbe8 0%, #e7f1fa 100%);
-    color: #fff;
-    transform: scale(1.07);
-    box-shadow: 0 7px 24px #b5cbe822;
-}
-
-/* كروت المهارات */
-.skills-list {
+    overflow-x: hidden; /* منع التمرير الأفقي */
+    letter-spacing: 0.04em;
+    direction: rtl; /* للغة العربية */
+    text-align: right; /* للمحاذاة لليمين */
     display: flex;
-    flex-wrap: wrap;
-    gap: 11px;
-    background: #fff;
-    box-shadow: none;
-    padding: 13px 0 10px 0;
-    margin-bottom: 18px;
-}
-.skill-badge {
-    background: #f6fbff;
-    color: #34506e;
-    border-radius: 11px;
-    padding: 8px 18px;
-    font-weight: 700;
-    font-size: 1em;
-    margin: 3px 0;
-    box-shadow: 0 1px 6px #b5cbe811;
-    border: 1.5px solid #e3e8ef;
-    transition: background 0.18s, color 0.18s;
-}
-.skill-badge:hover {
-    background: #b5cbe8;
-    color: #fff;
+    flex-direction: column;
 }
 
-/* فورمات */
-.form-control, input, textarea {
-    font-family: inherit;
-    border: 2px solid #d7e3f3;
-    border-radius: 16px;
-    padding: 11px 16px;
-    font-size: 1.08em;
-    margin-bottom: 16px;
-    background: #f5faff;
-    transition: border 0.2s, box-shadow 0.2s;
-    color: #23304a;
+/* --- Animated Moving Galaxy Background (using BSC.jpg) --- */
+.galaxy {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    pointer-events: none; /* لا يتفاعل مع مؤشر الماوس */
+    z-index: 0; /* طبقة خلفية */
+    /* تم تغيير مسار الصورة هنا إلى صورتك المحددة */
+    background: url("../images/BSC.jpg") center center / cover no-repeat;
+    opacity: 0.33; /* تم زيادة الشفافية قليلاً */
+    animation: galaxy-move 42s linear infinite alternate; /* تم تعديل سرعة ومدة الحركة */
 }
-.form-control:focus, input:focus, textarea:focus {
-    border: 2px solid #3e82fc;
-    outline: none;
-    box-shadow: 0 2px 9px #b5cbe822;
-}
-
-label {
-    color: #285b9a;
-    font-weight: bold;
-    margin-bottom: 8px;
-    display: block;
+@keyframes galaxy-move {
+    0%   { background-position: 60% 35%; } /* تم تعديل نقطة البداية للخلفية */
+    100% { background-position: 38% 60%; } /* تم تعديل نقطة النهاية للخلفية */
 }
 
-.alert, .flash-message {
-    padding: 18px 26px;
-    border-radius: 16px;
-    margin: 22px 0;
-    font-size: 1.08em;
-    background: #fafdff;
-    border: 2px solid #b5cbe8;
-    color: #2d3d5c;
-    box-shadow: 0 2px 13px #b5cbe812;
+/* --- Stars Container and Star Dots --- */
+.stars {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    pointer-events: none;
+    z-index: 1; /* فوق الجالاكسي، تحت المحتوى */
+}
+.star {
+    position: absolute;
+    border-radius: 50%;
+    background: white;
+    box-shadow: 0 0 6px 2px #fff8, 0 0 24px 0 #70a1ff44;
+    will-change: transform, opacity;
+    opacity: 0.7;
+    transition: opacity 0.3s;
 }
 
-/* reveal animation */
-.reveal {
+/* --- Floating Animation (for icons & elements) --- */
+@keyframes floaty {
+    0% { transform: translateY(0px) scale(1) rotate(0deg);}
+    25% { transform: translateY(-15px) scale(1.05) rotate(2deg);}
+    50% { transform: translateY(-10px) scale(0.98) rotate(-2deg);}
+    75% { transform: translateY(-18px) scale(1.04) rotate(1deg);}
+    100% { transform: translateY(0px) scale(1) rotate(0deg);}
+}
+
+/* --- Apply floaty to ALL icons and main section icons --- */
+.cv-header-photo,
+.cv-contact-list i,
+.social-links a i,
+.cv-skill-badge,
+.cv-language-badge,
+.cv-interest-badge,
+.contact-button,
+.btn-primary,
+.export-btn,
+.btn-glow {
+    animation: floaty 4.5s ease-in-out infinite;
+    will-change: transform;
+}
+
+/* Add slight random delay for social icons for more lively effect */
+.social-links a:nth-child(1) i { animation-delay: 0.2s;}
+.social-links a:nth-child(2) i { animation-delay: 0.7s;}
+.social-links a:nth-child(3) i { animation-delay: 1.2s;}
+.social-links a:nth-child(4) i { animation-delay: 1.6s;}
+.social-links a:nth-child(5) i { animation-delay: 2s;}
+
+
+/* --- Glassmorphism Cosmic Container (for main content) --- */
+/* هذا سيحل محل .container السابق ليتناسب مع التصميم الجديد */
+.cv-container, .cosmic-container, .container {
+    max-width: 900px;
+    margin: 48px auto;
+    background: rgba(40,44,74,0.72); /* خلفية شبه شفافة */
+    border-radius: 2.7em;
+    box-shadow: 0 10px 50px #000A, 0 2px 12px #b5cbe833;
+    padding: 38px 38px 30px 38px;
+    position: relative;
+    z-index: 2; /* فوق النجوم */
+    border: 2.5px solid #5363ff33;
+    backdrop-filter: blur(15px) saturate(1.3); /* تأثير الزجاج */
+    transition: box-shadow 0.3s;
+    /* للحركة الأولية التي يتم التحكم بها بواسطة JS */
     opacity: 0;
     transform: translateY(50px) scale(0.97);
-    transition: opacity 0.7s cubic-bezier(.39,.58,.57,1.2), transform 0.7s cubic-bezier(.39,.58,.57,1.2);
-    will-change: opacity, transform;
+    transition:
+        opacity 1s cubic-bezier(.39,.58,.57,1.2),
+        transform 1s cubic-bezier(.39,.58,.57,1.2);
 }
-.reveal.active {
+.cv-container.reveal,
+.cosmic-container.reveal,
+.container.reveal {
     opacity: 1;
     transform: translateY(0) scale(1);
 }
 
-/* تحسين القوائم */
-.project-card ul,
-.project-card li {
-    color: #385886;
-    font-size: 1.02em;
-    font-weight: 500;
-    padding-right: 2px;
-    padding-bottom: 2px;
-    line-height: 1.8;
-    background: none;
-    list-style: disc inside;
+/* --- Reveal Animation for Sections (JS controlled) --- */
+.cv-section,
+.cv-header,
+.contact-button-container,
+.social-links {
+    opacity: 0;
+    transform: translateY(60px) scale(0.96);
+    transition:
+        opacity 1.2s cubic-bezier(.39,.58,.57,1.2),
+        transform 1.2s cubic-bezier(.39,.58,.57,1.2);
+    will-change: opacity, transform;
+}
+.cv-section.reveal,
+.cv-header.reveal,
+.contact-button-container.reveal,
+.social-links.reveal {
+    opacity: 1;
+    transform: translateY(0) scale(1);
 }
 
-/* استجابة للموبايل */
-@media (max-width: 850px) {
-    .container { padding: 13px 3vw; margin: 16px 0;}
-    h2 { font-size: 1.2em;}
-    .skills-list { gap: 7px;}
+/* --- CV HEADER & ELEMENTS --- */
+.cv-header {
+    display: flex;
+    align-items: center;
+    gap: 36px;
+    margin-bottom: 36px;
+    border-bottom: 2px solid #3e82fc11;
+    padding-bottom: 16px;
+    position: relative;
+    z-index: 1;
+    background: none; /* إزالة الخلفية التي كانت من الثيم القديم */
 }
-@media (max-width: 600px) {
-    .container { padding: 5vw 1vw; margin: 7px 0;}
-    .skills-list { flex-direction: column; gap: 6px;}
-    .btn { font-size: .97em; padding: 9px 9px;}
-    .profile-card, .project-card, .skills-list, .footer { padding: 13px 7px 9px 7px; }
+.cv-header-photo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #5363ff 30%, #b995fd 100%);
+    box-shadow: 0 5px 60px #b5cbe844, 0 1px 6px #3e82fc18;
+    object-fit: cover;
+    border: 4px solid #fff4;
+    position: relative;
 }
-
-/* تأثير الكتابة الحية لبعض الكلمات */
-.typed {
-    font-family: 'Fira Mono', 'Tajawal', monospace, Arial;
-    color: #285b9a;
+.cv-header-main { flex: 1; }
+.cv-name {
+    font-size: 2.3em;
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 0.1em;
+    letter-spacing: 1.1px;
+    text-shadow: 0 4px 16px #3e82fc55;
+    background: linear-gradient(92deg,#b995fd 40%,#70a1ff 80%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.cv-title {
+    font-size: 1.15em;
+    color: #95e6ff;
     font-weight: 700;
-    background: none;
+    margin-bottom: 0.4em;
+    letter-spacing: 0.02em;
+}
+.cv-contact-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    font-size: 1.07em;
+    margin-bottom: 3px;
+    color: #70a1ff;
+}
+.cv-contact-list a, .cv-contact-list span {
+    color: #70a1ff;
+    text-decoration: none;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    transition: color 0.18s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.cv-contact-list a:hover { color: #b995fd; text-decoration: underline; }
+
+/* --- Section Titles --- */
+.cv-section-title {
+    font-size: 1.18em;
+    font-weight: 900;
+    color: #fff;
+    margin-top: 38px;
+    margin-bottom: 13px;
+    border-right: 7px solid #b995fd; /* لغة عربية: border-right */
+    padding-right: 13px; /* لغة عربية: padding-right */
+    background: linear-gradient(90deg, #5363ff 0%, #b995fd 100%);
+    border-radius: 0.9em;
     display: inline-block;
-    border-right: 2.5px solid #b5cbe8;
+    box-shadow: 0 1px 9px #5363ff22;
+    letter-spacing: 0.06em;
+}
+.cv-section { margin-bottom: 18px; }
+.cv-summary {
+    background: linear-gradient(100deg, #5363ff22 80%, #b995fd22 100%);
+    border-radius: 1.15em;
+    padding: 19px 22px 16px 22px;
+    font-size: 1.07em;
+    color: #e0eaff;
+    margin-bottom: 14px;
+    box-shadow: 0 3px 18px #5363ff11;
+    font-weight: 600;
+}
+.cv-experience-list, .cv-education-list {
+    padding-left: 0;
+    margin: 0;
+    list-style: none; /* إزالة علامات القائمة الافتراضية */
+}
+.cv-experience-item, .cv-education-item { margin-bottom: 18px; }
+.cv-job-title, .cv-education-title {
+    font-weight: 700;
+    color: #b995fd;
     font-size: 1.09em;
-    white-space: nowrap;
+    margin-bottom: 2px;
+    display: inline-block;
+}
+.cv-job-duration, .cv-education-meta {
+    font-size: 0.98em;
+    color: #70a1ff;
+    font-weight: 700;
+    margin-left: 7px;
+}
+.cv-job-details {
+    margin: 7px 0 0 0;
+    padding-right: 25px; /* لغة عربية: padding-right */
+    color: #d8e3ff;
+    font-size: 1.01em;
+    line-height: 1.7;
+    list-style: disc; /* استخدام علامات القرص */
+}
+.cv-job-details li { margin-bottom: 5px; }
+.cv-skills-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 11px;
+    margin-top: 4px;
+    margin-bottom: 8px;
+}
+.cv-skill-badge {
+    background: linear-gradient(90deg,#70a1ff33 0%,#b995fd33 100%);
+    color: #fff;
+    border-radius: 13px;
+    padding: 8px 18px;
+    font-weight: 700;
+    font-size: 1em;
+    box-shadow: 0 1px 6px #3e82fc33;
+    border: 1.5px solid #b995fd55;
+    transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+    margin-bottom: 2px;
+    backdrop-filter: blur(4.5px) brightness(1.15);
+}
+.cv-skill-badge:hover {
+    background: linear-gradient(90deg,#b995fd 0%,#70a1ff 100%);
+    color: #fff;
+    box-shadow: 0 2px 14px #b995fd44;
+}
+.cv-languages-list, .cv-interests-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+.cv-language-badge, .cv-interest-badge {
+    background: #5363ff44;
+    border-radius: 9px;
+    padding: 7px 18px;
+    font-weight: 700;
+    color: #fff;
+    font-size: .98em;
+    border: 1px solid #b995fd66;
+    box-shadow: 0 1px 4px #3e82fc22;
+    transition: background 0.18s, color 0.18s;
+}
+.cv-language-badge.native { background: #b995fd; color: #fff; }
+.cv-language-badge.good { background: #70a1ff; color: #fff; }
+.cv-interest-badge:hover { color: #fff; background: #5363ff; }
+.social-links {
+    text-align: center;
+    margin-top: 30px;
+}
+.social-links a {
+    display: inline-block;
+    margin: 0 10px;
+    text-decoration: none;
+    color: #70a1ff;
+    font-size: 1.1em;
+    padding: 10px 18px;
+    border: 1px solid #70a1ff;
+    border-radius: 25px;
+    transition: background-color 0.3s, color 0.3s, transform 0.2s;
+    box-shadow: 0 2px 5px #5363ff22;
+}
+.social-links a:hover {
+    background: #70a1ff;
+    color: #fff;
+    transform: translateY(-3px);
+}
+.contact-button-container { text-align: center; margin-top: 40px; margin-bottom: 20px; }
+.contact-button, .btn-primary {
+    display: inline-block;
+    padding: 18px 35px;
+    background: linear-gradient(90deg,#53e7b7 0%,#70a1ff 100%);
+    color: white;
+    text-decoration: none;
+    border-radius: 30px;
+    font-size: 1.2em;
+    font-weight: bold;
+    box-shadow: 0 4px 10px #70a1ff55, 0 2px 12px #3e82fc33;
+    transition: background 0.3s, transform 0.2s, color 0.2s;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    position: relative;
     overflow: hidden;
-    letter-spacing: 1px;
-    animation: blink-caret 0.75s step-end infinite;
+}
+.contact-button:hover, .btn-primary:hover {
+    background: linear-gradient(90deg,#70a1ff 0%,#53e7b7 100%);
+    transform: translateY(-3px) scale(1.04);
+    color: #fff;
+    filter: brightness(1.05);
+}
+.export-btn, .btn-glow {
+    background: linear-gradient(90deg,#b995fd 0%,#5363ff 100%);
+    color: #fff;
+    border: none;
+    padding: 13px 30px;
+    border-radius: 26px;
+    font-size: 1.07em;
+    font-weight: bold;
+    text-decoration: none;
+    box-shadow: 0 2px 18px #3e82fc22, 0 1px 8px #b5cbe822;
+    margin: 8px 5px 8px 0;
+    transition: background 0.18s, color 0.18s, box-shadow 0.18s, transform 0.14s;
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    outline: none;
+}
+.export-btn:hover, .btn-glow:hover {
+    background: linear-gradient(90deg,#5363ff 0%,#b995fd 100%);
+    color: #fff;
+    transform: translateY(-3px) scale(1.035);
+    box-shadow: 0 7px 30px #b995fd44;
+}
+
+/* --- General Flask UI elements - adapted for cosmic theme --- */
+.navbar {
+    background-color: rgba(0, 0, 0, 0.4); /* خلفية شبه شفافة */
+    padding: 15px 0;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.4);
+    text-align: center;
+    position: relative;
+    z-index: 3; /* فوق كل شيء آخر */
+}
+.navbar a {
+    color: #e0eaff; /* لون فاتح للروابط */
+    text-decoration: none;
+    padding: 10px 20px;
+    margin: 0 5px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease, color 0.3s ease;
+    font-weight: bold;
+    font-size: 1.05em;
+    border: 1px solid transparent;
+}
+.navbar a:hover {
+    background-color: rgba(83, 99, 255, 0.2); /* تأثير خفيف عند التحويم */
+    transform: translateY(-2px);
+    color: #b995fd;
+    border-color: #b995fd33;
+}
+
+.flash-messages {
+    list-style: none;
+    padding: 10px 20px;
+    margin: 10px auto;
+    max-width: 960px;
+    border-radius: 8px;
+    text-align: center;
+    position: relative;
+    z-index: 3;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    backdrop-filter: blur(8px) saturate(1.5);
+    font-weight: bold;
+    font-size: 1.1em;
+}
+.flash-messages li {
+    margin-bottom: 5px;
+    padding: 12px;
+    border-radius: 6px;
+}
+.flash-messages .success {
+    background-color: rgba(83, 231, 183, 0.2); /* أخضر فاتح شفاف */
+    color: #53e7b7;
+    border: 1px solid #53e7b7;
+}
+.flash-messages .danger {
+    background-color: rgba(220, 53, 69, 0.2); /* أحمر فاتح شفاف */
+    color: #dc3545;
+    border: 1px solid #dc3545;
+}
+.flash-messages .info {
+    background-color: rgba(112, 161, 255, 0.2); /* أزرق فاتح شفاف */
+    color: #70a1ff;
+    border: 1px solid #70a1ff;
+}
+
+footer {
+    margin-top: auto;
+    padding: 20px;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.4); /* خلفية شبه شفافة */
+    color: #aeb8f0; /* لون فاتح للفوتر */
+    font-size: 0.95em;
+    box-shadow: 0 -2px 15px rgba(0,0,0,0.2);
+    position: relative;
+    z-index: 2;
+    backdrop-filter: blur(8px) saturate(1.5);
+}
+
+/* --- Form General Styles (adapted for cosmic theme) --- */
+.form-group {
+    margin-bottom: 25px;
+    text-align: right;
+}
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #b995fd; /* لون نص فاتح للـ labels */
+    font-size: 1.1em;
+}
+.form-control {
+    width: calc(100% - 24px); /* Adjust for padding and border */
+    padding: 12px;
+    border: 1px solid #5363ff33; /* حدود شفافة */
+    border-radius: 8px;
+    font-size: 1em;
+    box-sizing: border-box;
+    background-color: rgba(40,44,74,0.5); /* خلفية شفافة للحقول */
+    color: #e4e9ff; /* نص فاتح في الحقول */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.form-control::placeholder {
+    color: #aeb8f0; /* لون أفتح للنص النائب */
+    opacity: 0.7;
+}
+.form-control:focus {
+    border-color: #70a1ff;
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(112,161,255,.25);
+}
+.errors {
+    color: #dc3545; /* أحمر للأخطاء */
+    font-size: 0.9em;
+    list-style: none;
+    padding: 5px 0;
+    margin: 5px 0 0 0;
+    text-align: right;
+}
+.errors li {
+    margin-bottom: 3px;
+}
+
+/* Admin Auth (Login/Edit) Specific Styles - using .container for glassmorphism */
+.admin-auth-container, .admin-edit-container {
+    /* These classes are now covered by .container, .cosmic-container styling */
+    /* Remove redundant styles here as they are defined by the global .container */
+    text-align: center;
+    padding-top: 30px; /* Adjust padding if needed */
+}
+.admin-auth-container h2, .admin-edit-container h2 {
+    margin-bottom: 30px;
+    color: #b995fd; /* لون جديد للعناوين الفرعية */
+    font-size: 2em;
+    text-shadow: 0 2px 10px rgba(185,149,253,0.3);
+}
+
+/* Admin Dashboard Specific Styles - using .container for glassmorphism */
+.admin-dashboard-page {
+    /* Covered by .container */
+    padding-top: 30px; /* Adjust padding if needed */
+}
+.admin-dashboard-page h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #b995fd;
+    font-size: 2em;
+    text-shadow: 0 2px 10px rgba(185,149,253,0.3);
+}
+.stats-section {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+    flex-wrap: wrap; /* للسماح بالعناصر بالانتقال إلى سطر جديد */
+    gap: 20px; /* مسافة بين الصناديق */
+}
+.stat-box {
+    background-color: rgba(83, 99, 255, 0.2); /* خلفية شفافة */
+    border: 1px solid #5363ff55;
+    border-radius: 15px;
+    padding: 25px 35px;
+    text-align: center;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    backdrop-filter: blur(10px) saturate(1.2);
+}
+.stat-box:hover {
+    transform: translateY(-8px) scale(1.05); /* تأثير ارتقاء عند التحويم */
+    background-color: rgba(83, 99, 255, 0.35);
+}
+.stat-box h3 {
+    color: #b995fd;
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-size: 1.4em;
+    text-shadow: 0 1px 8px rgba(185,149,253,0.2);
+}
+.stat-box .stat-number {
+    font-size: 3.5em;
+    font-weight: 900;
+    color: #53e7b7; /* لون جديد للرقم */
+    margin: 0;
+    text-shadow: 0 2px 15px #53e7b755;
+}
+.messages-section h3 {
+    font-size: 1.8em;
+    margin-top: 40px;
+    margin-bottom: 25px;
+    color: #b995fd;
+    border-bottom: 2px solid #5363ff11;
+    padding-bottom: 10px;
+    display: inline-block;
+    text-shadow: 0 2px 10px rgba(185,149,253,0.3);
+}
+.export-buttons-container {
+    text-align: center;
+    margin-bottom: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+}
+.table-responsive {
+    overflow-x: auto;
+    border-radius: 12px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.3);
+    background-color: rgba(40,44,74,0.6); /* خلفية الجدول */
+    backdrop-filter: blur(8px) saturate(1.2);
+}
+.messages-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    color: #e0eaff; /* لون نص الجدول */
+}
+.messages-table th, .messages-table td {
+    border: 1px solid rgba(83, 99, 255, 0.2); /* حدود شفافة */
+    padding: 14px;
+    text-align: right;
+    vertical-align: top;
+}
+.messages-table th {
+    background-color: rgba(83, 99, 255, 0.1); /* خلفية رؤوس الأعمدة */
+    color: #b995fd;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.95em;
+}
+.messages-table tbody tr:nth-child(even) {
+    background-color: rgba(40,44,74,0.5); /* صفوف زوجية بخلفية أغمق قليلاً */
+}
+.messages-table tbody tr:hover {
+    background-color: rgba(83, 99, 255, 0.15); /* تأثير عند التحويم */
+    cursor: pointer;
+}
+.no-messages-alert {
+    text-align: center;
+    font-size: 1.1em;
+    color: #aeb8f0;
+    padding: 20px;
+    background-color: rgba(40,44,74,0.5);
+    border-radius: 8px;
+    margin-top: 30px;
+    border: 1px solid #5363ff33;
+}
+
+
+/* --- Ripple Effect CSS (moved from JS) --- */
+.ripple {
+    position: absolute;
+    border-radius: 50%;
+    transform: scale(0);
+    animation: ripple-effect-cosmic 0.8s linear;
+    background: linear-gradient(90deg,#70a1ffcc,#b995fdcc);
+    pointer-events: none;
+    z-index: 2;
+}
+@keyframes ripple-effect-cosmic {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+/* Make sure buttons have relative position for ripple to work */
+.btn-primary, .contact-button, .export-btn, .btn-glow, .navbar a {
+    position: relative;
+    overflow: hidden;
+}
+
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 900px) {
+    .cv-header { flex-direction: column; gap: 14px; align-items: flex-start; }
+    .cv-header-photo { width: 80px; height: 80px; }
+    .cv-section-title { font-size: 1.03em; padding-right: 7px; }
+    .cv-container, .container { padding: 6vw 2vw; margin: 20px auto; } /* تعديل الهوامش */
+    .cv-skills-list, .cv-languages-list, .cv-interests-list { flex-direction: column; gap: 6px;}
+    .cv-skill-badge, .cv-language-badge, .cv-interest-badge { font-size: 0.98em; padding: 7px 14px; }
+    .navbar a { padding: 8px 15px; font-size: 0.95em; } /* تصغير حجم روابط التنقل */
+    .export-buttons-container { flex-direction: column; align-items: center; gap: 10px; }
+    .stat-box { width: 90%; margin-bottom: 20px; }
+    .messages-table th, .messages-table td { padding: 10px; font-size: 0.85em; }
+}
+
+@media (max-width: 480px) {
+    .cv-header-photo { width: 100px; height: 100px; } /* تعديل حجم الصورة ليتناسب بشكل أفضل */
+    .cv-name { font-size: 1.8em; }
+    .cv-title { font-size: 1em; }
+    .cv-contact-list { font-size: 0.9em; flex-direction: column; gap: 10px; align-items: flex-start; } /* تخطيط عمودي */
+    .cv-section-title { font-size: 1em; padding-right: 10px; }
+    .cv-summary { font-size: 0.95em; padding: 15px; }
+    .cv-job-details { font-size: 0.95em; padding-right: 15px; }
+    .contact-button, .btn-primary { padding: 15px 25px; font-size: 1em; }
+    .export-btn, .btn-glow { padding: 10px 20px; font-size: 0.95em; }
+    .admin-auth-container, .admin-edit-container { max-width: 95%; margin: 20px auto; }
+    .admin-dashboard-page h2 { font-size: 1.6em; }
+    .stat-box .stat-number { font-size: 3em; }
 }

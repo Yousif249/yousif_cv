@@ -1,66 +1,27 @@
+# -*- coding: utf-8 -*-
+# forms.py
+
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, PasswordField, SubmitField
-from wtforms.validators import DataRequired, Email, Length, Optional
+from wtforms import StringField, PasswordField, TextAreaField, SubmitField
+from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationError
 
+# تعريف نموذج الاتصال
 class ContactForm(FlaskForm):
-    full_name = StringField(
-        'الاسم الكامل',
-        validators=[
-            DataRequired(message="الاسم مطلوب"),
-            Length(max=100, message="الاسم طويل جدًا (100 حرف كحد أقصى)")
-        ]
-    )
-    phone = StringField(
-        'رقم الجوال',
-        validators=[
-            DataRequired(message="رقم الجوال مطلوب"),
-            Length(max=30, message="رقم الجوال طويل جدًا (30 رقم كحد أقصى)")
-        ]
-    )
-    email = StringField(
-        'البريد الإلكتروني',
-        validators=[
-            DataRequired(message="البريد الإلكتروني مطلوب"),
-            Email(message="صيغة البريد الإلكتروني غير صحيحة"),
-            Length(max=120, message="البريد طويل جدًا (120 حرف كحد أقصى)")
-        ]
-    )
-    message = TextAreaField(
-        'الرسالة',
-        validators=[
-            DataRequired(message="نص الرسالة مطلوب")
-        ]
-    )
-    submit = SubmitField('إرسال')
+    name = StringField('الاسم', validators=[DataRequired('الاسم مطلوب.')])
+    phone = StringField('رقم الجوال', validators=[DataRequired('رقم الجوال مطلوب.'), Length(min=8, max=20, message='يجب أن يكون رقم الجوال بين 8 و 20 رقم.')])
+    email = StringField('البريد الإلكتروني', validators=[DataRequired('البريد الإلكتروني مطلوب.'), Email('صيغة البريد الإلكتروني غير صحيحة.')])
+    message = TextAreaField('الرسالة', validators=[DataRequired('الرسالة مطلوبة.'), Length(min=10, message='يجب أن تكون الرسالة 10 أحرف على الأقل.')])
+    submit = SubmitField('إرسال الرسالة')
 
-class LoginForm(FlaskForm):
-    username = StringField(
-        'اسم المستخدم',
-        validators=[
-            DataRequired(message="اسم المستخدم مطلوب")
-        ]
-    )
-    password = PasswordField(
-        'كلمة المرور',
-        validators=[
-            DataRequired(message="كلمة المرور مطلوبة")
-        ]
-    )
-    submit = SubmitField('دخول')
+# تعريف نموذج تسجيل دخول الأدمن
+class AdminLoginForm(FlaskForm):
+    username = StringField('اسم المستخدم', validators=[DataRequired('اسم المستخدم مطلوب.')])
+    password = PasswordField('كلمة المرور', validators=[DataRequired('كلمة المرور مطلوبة.')])
+    submit = SubmitField('تسجيل الدخول')
 
+# تعريف نموذج تعديل بيانات الأدمن
 class EditAdminForm(FlaskForm):
-    username = StringField(
-        'اسم الأدمن',
-        validators=[
-            DataRequired(message="اسم الأدمن مطلوب"),
-            Length(min=3, max=50, message="الاسم بين 3 و50 حرف")
-        ]
-    )
-    password = PasswordField(
-        'كلمة المرور الجديدة',
-        validators=[
-            Optional(),
-            Length(min=6, message="كلمة المرور يجب ألا تقل عن 6 أحرف")
-        ]
-    )
-    submit = SubmitField('حفظ التعديلات')
+    new_username = StringField('اسم المستخدم الجديد', validators=[DataRequired('اسم المستخدم الجديد مطلوب.')])
+    new_password = PasswordField('كلمة المرور الجديدة', validators=[DataRequired('كلمة المرور الجديدة مطلوبة.'), Length(min=6, message='يجب أن تكون كلمة المرور 6 أحرف على الأقل.')])
+    confirm_password = PasswordField('تأكيد كلمة المرور الجديدة', validators=[DataRequired('تأكيد كلمة المرور مطلوب.'), EqualTo('new_password', message='كلمتا المرور غير متطابقتين.')])
+    submit = SubmitField('تحديث بيانات الأدمن')

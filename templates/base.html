@@ -1,154 +1,52 @@
+{# -*- coding: utf-8 -*- #}
+{# templates/base.html #}
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}سيرتي الذاتية{% endblock %}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    {% block head %}{% endblock %}
-    <style>
-        /* وهج عند تمرير الفأرة على الحاويات والأزرار */
-        .glow-hover:hover, .btn-glow:hover, .profile-card:hover, .project-card:hover, .skills-list:hover, .footer:hover {
-            box-shadow: 0 0 30px 8px #3e82fc45, 0 0 2px 2px #fff;
-            transition: box-shadow 0.3s;
-        }
-        /* نبض للأزرار عند النقر */
-        .pulse:active {
-            animation: pulse-btn 0.35s;
-        }
-        @keyframes pulse-btn {
-          0% { transform: scale(1); box-shadow: 0 0 0 0 #3e82fc33;}
-          50% { transform: scale(1.07); box-shadow: 0 0 12px 8px #3e82fc44;}
-          100% { transform: scale(1); box-shadow: 0 0 0 0 #3e82fc33;}
-        }
-        /* reveal animation */
-        .reveal {
-            opacity: 0;
-            transform: translateY(60px) scale(0.96);
-            transition: opacity 0.7s cubic-bezier(.39,.58,.57,1.2), transform 0.7s cubic-bezier(.39,.58,.57,1.2);
-            will-change: opacity, transform;
-        }
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
-        /* تأثير الكتابة */
-        .typed, .typewriter {
-            font-family: 'Fira Mono', 'Tajawal', monospace, Arial;
-            color: #3e82fc;
-            font-weight: 700;
-            background: none;
-            display: inline-block;
-            border-right: 2.5px solid #b995fd;
-            font-size: 1.09em;
-            white-space: nowrap;
-            overflow: hidden;
-            letter-spacing: 1px;
-            animation: blink-caret 0.75s step-end infinite;
-        }
-        @keyframes blink-caret {
-            0%, 100% { border-color: #b995fd; }
-            50% { border-color: transparent; }
-        }
-        /* وهج متحرك حول البطاقة الشخصية */
-        .profile-glow {
-            position:absolute;
-            top:-15px;left:-15px;right:-15px;bottom:-15px;
-            z-index:0;
-            border-radius: 2.7em;
-            background: conic-gradient(
-                from 0deg,
-                #b5cbe8 0deg,
-                #3e82fc 120deg,
-                #b5cbe8 240deg,
-                #fff 360deg
-            );
-            filter: blur(20px);
-            opacity: 0.20;
-            transition: opacity 0.4s;
-            pointer-events: none;
-            animation: borderGlowProfile 9s linear infinite;
-        }
-        @keyframes borderGlowProfile {
-            0% { filter: blur(20px) brightness(0.99);}
-            50% { filter: blur(24px) brightness(1.10);}
-            100% { filter: blur(20px) brightness(0.99);}
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    {# إضافة خلفية الجالاكسي والنجوم هنا #}
+    <div class="galaxy"></div>
+    <div class="stars"></div>
+
+    <nav class="navbar">
+        <a href="{{ url_for('index') }}">الرئيسية</a>
+        <a href="{{ url_for('contact') }}">تواصل معي</a>
+        {% if current_user.is_authenticated %}
+            <a href="{{ url_for('admin_dashboard') }}">لوحة التحكم</a>
+            <a href="{{ url_for('edit_admin') }}">تعديل الأدمن</a>
+            <a href="{{ url_for('admin_logout') }}">تسجيل الخروج</a>
+        {% else %}
+            <a href="{{ url_for('admin_login') }}">دخول الأدمن</a>
+        {% endif %}
+    </nav>
+
     {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        <div class="container mt-3">
-          {% for category, message in messages %}
-            <div class="alert alert-{{ category }}">{{ message }}</div>
-          {% endfor %}
-        </div>
-      {% endif %}
+        {% if messages %}
+            <ul class="flash-messages">
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
     {% endwith %}
-    {% block content %}{% endblock %}
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-    // ظهور تدريجي للعناصر عند التمرير
-    document.addEventListener('DOMContentLoaded', function() {
-        function revealOnScroll() {
-            document.querySelectorAll('.reveal').forEach(function(el) {
-                const windowHeight = window.innerHeight;
-                const elementTop = el.getBoundingClientRect().top;
-                if (elementTop < windowHeight - 90) {
-                    el.classList.add('active');
-                }
-            });
-        }
-        window.addEventListener('scroll', revealOnScroll);
-        revealOnScroll();
 
-        // وهج متحرك حول البطاقة الشخصية عند المرور
-        const profileCard = document.querySelector('.profile-card');
-        if (profileCard) {
-            profileCard.addEventListener('mouseenter', function() {
-                let glow = profileCard.querySelector('.profile-glow');
-                if(glow) glow.style.opacity = 0.55;
-            });
-            profileCard.addEventListener('mouseleave', function() {
-                let glow = profileCard.querySelector('.profile-glow');
-                if(glow) glow.style.opacity = 0.20;
-            });
-        }
+    {# إضافة فئة 'cosmic-container' لـ .container هنا لتطبيق تصميم الـ glassmorphism #}
+    <div class="container cosmic-container">
+        {% block content %}{% endblock %}
+    </div>
 
-        // تأثير نبض للأزرار عند النقر
-        document.querySelectorAll('.btn, .btn-glow').forEach(function(btn) {
-            btn.addEventListener('mousedown', function() {
-                btn.classList.add('pulse');
-            });
-            btn.addEventListener('animationend', function() {
-                btn.classList.remove('pulse');
-            });
-        });
+    <footer>
+        <p>&copy; {{ datetime.utcnow().year }} يوسف طارق. جميع الحقوق محفوظة.</p>
+    </footer>
 
-        // تأثير اضاءة للفوتر كل عدة ثوانٍ
-        const footer = document.querySelector('.footer');
-        if (footer) {
-            setInterval(() => {
-                footer.style.boxShadow = "0 0 18px 7px #3e82fc55";
-                setTimeout(() => { footer.style.boxShadow = ""; }, 700);
-            }, 2600);
-        }
-
-        // تأثير الكتابة لكلمات typewriter/typed
-        function typeWriter(el, text, speed=55, i=0) {
-            if (i < text.length) {
-                el.textContent += text.charAt(i);
-                setTimeout(() => typeWriter(el, text, speed, i + 1), speed);
-            }
-        }
-        document.querySelectorAll('.typewriter, .typed').forEach(function(el) {
-            const text = el.dataset.text || el.textContent;
-            el.textContent = '';
-            typeWriter(el, text);
-        });
-    });
-    </script>
-    {% block scripts %}{% endblock %}
+    <script src="{{ url_for('static', filename='js/chart.js') }}"></script>
 </body>
 </html>
