@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
-import { Star, ChevronLeft, ChevronRight, Quote, GraduationCap, Award } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Quote, GraduationCap, Award } from 'lucide-react';
 import { testimonialsConfig } from '@/config';
 
 export function Testimonials() {

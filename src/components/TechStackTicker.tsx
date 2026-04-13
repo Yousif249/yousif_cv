@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils';
+
 
 const techs = [
   { name: 'Python', icon: 'https://cdn.simpleicons.org/python' },

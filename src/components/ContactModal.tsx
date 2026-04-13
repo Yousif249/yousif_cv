@@ -1,5 +1,5 @@
 import * as Dialog from '@radix-ui/react-dialog';
-import { X, Mail, Phone, Instagram, Send, Star, User, Building, MessageSquare } from 'lucide-react';
+import { X, Mail, Phone, Instagram, Send, User, Building, MessageSquare } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import { toast } from 'sonner';

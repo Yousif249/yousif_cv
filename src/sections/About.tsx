@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 import { useScrollAnimation, useStaggerAnimation } from '@/hooks/useScrollAnimation';
-import { Mail, Phone, Linkedin, MapPin } from 'lucide-react';
+import { Mail, MapPin } from 'lucide-react';
 import { aboutConfig } from '@/config';
 
 export function About() {

@@ -78,7 +78,7 @@ export function Footer() {
 
             {/* Links Columns */}
             <div className="lg:col-span-4 grid grid-cols-2 gap-8">
-              {footerConfig.columns.map((column, colIndex) => (
+              {footerConfig.columns.map((column) => (
                 <div key={column.title} className="space-y-6">
                   <h4 className="text-[10px] font-geist-mono uppercase tracking-[0.3em] text-blue-400 font-bold">
                     {column.title}
